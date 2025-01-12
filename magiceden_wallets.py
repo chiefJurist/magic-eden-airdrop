@@ -1,5 +1,6 @@
 from solana.rpc.api import Client
-from solana.publickey import PublicKey  # Import PublicKey to convert the string to Pubkey
+from solders.pubkey import Pubkey
+
 
 # Connect to Solana mainnet RPC
 client = Client("https://api.mainnet-beta.solana.com")
