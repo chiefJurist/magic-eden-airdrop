@@ -5,8 +5,11 @@ from solders.pubkey import Pubkey
 # Connect to Solana mainnet RPC
 client = Client("https://api.mainnet-beta.solana.com")
 
+# Decode the base58 string to bytes
+decoded_key = base58.b58decode("MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8")
+
 # Magic Eden Program ID
-magiceden_program_id = Pubkey("MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8")  # Convert to Pubkey
+magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 
 # Fetch recent transactions related to Magic Eden
 response = client.get_signatures_for_address(magiceden_program_id, limit=100)
