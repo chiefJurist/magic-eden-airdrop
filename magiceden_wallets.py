@@ -15,7 +15,7 @@ magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 unique_wallets = set()
 
 # Initial call to get the first batch of signatures
-response = client.get_signatures_for_address(magiceden_program_id, limit=100)
+response = client.get_signatures_for_address(magiceden_program_id, limit=20)
 
 # Print the response to inspect its structure
 print(response)
