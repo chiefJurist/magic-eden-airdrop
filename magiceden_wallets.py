@@ -11,15 +11,20 @@ decoded_key = base58.b58decode("MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8")
 # Magic Eden Program ID
 magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 
+# Initial call to get the first batch of signatures with limit 20
+response = client.get_signatures_for_address(magiceden_program_id, limit=20)
+
+# Print the raw response for debugging
+print("Raw Response:")
+print(response)
+
 # Set to store unique wallet addresses
 unique_wallets = set()
-
-# Initial call to get the first batch of signatures
-response = client.get_signatures_for_address(magiceden_program_id, limit=20)
 
 # Assuming response is a GetSignaturesForAddressResp object, loop through the results
 if hasattr(response, 'result'):
     for tx in response.result:
+        print(f"Transaction Signature: {tx.signature}, Error: {tx.err}")  # Print signature and error (if any)
         if tx.err is None:  # Successful transaction (no error)
             signature = tx.signature
             # Fetch the transaction details
