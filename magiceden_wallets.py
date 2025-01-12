@@ -2,7 +2,6 @@ from solana.rpc.api import Client
 from solders.pubkey import Pubkey
 import base58
 
-
 # Connect to Solana mainnet RPC
 client = Client("https://api.mainnet-beta.solana.com")
 
@@ -16,9 +15,12 @@ magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 response = client.get_signatures_for_address(magiceden_program_id, limit=100)
 
 print("Recent wallet addresses interacting with Magic Eden:")
-for tx in response['result']:
-    signature = tx['signature']
-    transaction = client.get_transaction(signature)
-    if transaction['result']:
-        for account in transaction['result']['transaction']['message']['accountKeys']:
-            print(account)
+
+# Use the correct attribute to access the results
+if response['result']:
+    for tx in response['result']:
+        signature = tx['signature']
+        transaction = client.get_transaction(signature)
+        if transaction['result']:
+            for account in transaction['result']['transaction']['message']['accountKeys']:
+                print(account)
