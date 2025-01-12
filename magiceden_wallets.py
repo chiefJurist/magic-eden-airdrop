@@ -1,5 +1,6 @@
 from solana.rpc.api import Client
 from solders.pubkey import Pubkey
+import base58
 
 
 # Connect to Solana mainnet RPC
