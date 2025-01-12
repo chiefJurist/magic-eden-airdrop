@@ -14,6 +14,9 @@ magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 # Fetch recent transactions related to Magic Eden
 response = client.get_signatures_for_address(magiceden_program_id, limit=100)
 
+# Print the entire response for debugging
+print(response)
+
 # Check if the response contains results and process them
 if hasattr(response, 'result') and response.result:
     print("Recent wallet addresses interacting with Magic Eden:")
