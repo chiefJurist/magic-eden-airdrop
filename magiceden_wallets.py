@@ -16,9 +16,9 @@ response = client.get_signatures_for_address(magiceden_program_id, limit=100)
 
 print("Recent wallet addresses interacting with Magic Eden:")
 
-# Use the correct attribute to access the results
-if response['result']:
-    for tx in response['result']:
+# Use the correct method or property to access the result
+if response.result:  # Access the result attribute of the response
+    for tx in response.result:
         signature = tx['signature']
         transaction = client.get_transaction(signature)
         if transaction['result']:
