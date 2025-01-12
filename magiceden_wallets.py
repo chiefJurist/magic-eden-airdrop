@@ -14,10 +14,6 @@ magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 # Initial call to get the first batch of signatures with limit 20
 response = client.get_signatures_for_address(magiceden_program_id, limit=20)
 
-# Print all the signatures in the response correctly
-if response.get('result'):
-    print("Signatures of transactions that interacted with Magic Eden:")
-    for tx in response['result']:
-        print(tx['signature'])
-else:
-    print("No results found.")
+# Print the entire response to inspect its structure
+print("Full response:")
+print(response)
