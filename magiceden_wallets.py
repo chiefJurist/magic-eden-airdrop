@@ -17,3 +17,9 @@ response = client.get_signatures_for_address(magiceden_program_id, limit=20)
 # Print the entire response to inspect its structure
 print("Full response:")
 print(response)
+
+# Access and print all individual signatures
+if response and hasattr(response, 'value'):
+    print("\nIndividual signatures:")
+    for txn in response.value:
+        print(txn.signature)
