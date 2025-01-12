@@ -14,14 +14,11 @@ magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 # Fetch recent transactions related to Magic Eden
 response = client.get_signatures_for_address(magiceden_program_id, limit=100)
 
-# Print the response object to inspect its structure
-print(response)
-
-# Proceed with the logic if response contains the expected results
-if hasattr(response, 'result') and response.result:
+# Check if the response contains results and process them
+if response:
     print("Recent wallet addresses interacting with Magic Eden:")
-    for tx in response.result:
-        signature = tx['signature']
+    for tx in response:
+        signature = tx.signature
         transaction = client.get_transaction(signature)
         if transaction['result']:
             for account in transaction['result']['transaction']['message']['accountKeys']:
