@@ -11,20 +11,33 @@ decoded_key = base58.b58decode("MEisE1HzehtrDpAAT8PnLHjpSSkRYakotTuJRPjTpo8")
 # Magic Eden Program ID
 magiceden_program_id = Pubkey(decoded_key)  # Convert to Pubkey
 
-# Fetch recent transactions related to Magic Eden
+# Set to store unique wallet addresses
+unique_wallets = set()
+
+# Initial call to get the first batch of signatures
 response = client.get_signatures_for_address(magiceden_program_id, limit=100)
 
-# Print the entire response for debugging
-print(response)
-
-# Check if the response contains results and process them
-if hasattr(response, 'result') and response.result:
-    print("Recent wallet addresses interacting with Magic Eden:")
+# Loop through the response to fetch all signatures
+while response.result:
+    # Iterate through each signature
     for tx in response.result:
-        signature = tx.signature
-        transaction = client.get_transaction(signature)
-        if transaction['result']:
-            for account in transaction['result']['transaction']['message']['accountKeys']:
-                print(account)
-else:
-    print("No results found.")
+        if tx.err is None:  # Successful transaction (no error)
+            signature = tx.signature
+            # Fetch the transaction details
+            transaction = client.get_transaction(signature)
+            if transaction['result']:
+                # Extract the account keys from the transaction
+                for account in transaction['result']['transaction']['message']['accountKeys']:
+                    unique_wallets.add(account)  # Add account to the set of unique wallets
+
+    # If there are more results, paginate and fetch the next batch
+    if hasattr(response, 'meta') and 'next' in response.meta:
+        response = client.get_signatures_for_address(magiceden_program_id, before=response.meta['next'], limit=100)
+    else:
+        break
+
+# Display all unique wallet addresses
+print("Wallet addresses that have interacted with Magic Eden:")
+for wallet in unique_wallets:
+    print(wallet)
+
